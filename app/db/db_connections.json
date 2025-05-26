@@ -1,0 +1,6 @@
+{
+  "Demo_connection": {
+    "server": "P360_server",
+    "db_name": "p360"
+  }
+}

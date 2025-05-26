@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Database Manager</title>
+</head>
+<body>
+  <h1>Database Connections</h1>
+
+  <form method="post" action="/connections/add">
+    <input name="name" placeholder="Connection Name" required>
+    <input name="server" placeholder="Server Address" required>
+    <input name="db_name" placeholder="Database Name" required>
+    <button type="submit">Add Connection</button>
+  </form>
+
+  <form method="post" action="/connections/delete">
+    <select name="name">
+      {% for name in connections %}
+        <option value="{{ name }}">{{ name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Delete Connection</button>
+  </form>
+
+  <form method="post" action="/connections/select">
+    <select name="name">
+      {% for name in connections %}
+        <option value="{{ name }}" {% if name == selected %}selected{% endif %}>{{ name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Select Connection</button>
+  </form>
+
+  <h2>Run Query on {{ selected or "None" }}</h2>
+  <form method="post" action="/query">
+    <textarea name="sql" rows="6" cols="80" placeholder="SELECT * FROM your_table;"></textarea><br>
+    <button type="submit">Execute</button>
+  </form>
+
+  {% if rows %}
+    <h3>Query Results</h3>
+    <table border="1">
+      <tr>
+        {% for col in rows[0].keys() %}
+          <th>{{ col }}</th>
+        {% endfor %}
+      </tr>
+      {% for row in rows %}
+        <tr>
+          {% for value in row.values() %}
+            <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+</body>
+</html>
